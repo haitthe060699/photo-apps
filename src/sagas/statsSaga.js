@@ -1,0 +1,27 @@
+import { IMAGES } from "../constants";
+import { take, fork, put, call } from "redux-saga/effects";
+import { fetchImageStats } from "../api";
+import { loadImageStats, setImageStats, setImageStatsError } from "../actions";
+
+function* handleStatsRequest(id) {
+  for (let i = 0; i < 3; i++) {
+    // let hit server at most 3 times
+
+    try {
+      yield put(loadImageStats(id));
+      const res = yield call(fetchImageStats, id);
+      yield put(setImageStats(id, res.views.total));
+      return true;
+    } catch (e) {}
+  }
+  yield put(setImageStatsError(id));
+}
+
+export default function* watchStatsRequest() {
+  while (true) {
+    const { images } = yield take(IMAGES.LOAD_SUCCESS);
+    for (let i = 0; i < images.length; i++) {
+      yield fork(handleStatsRequest, images[i].id);
+    }
+  }
+}

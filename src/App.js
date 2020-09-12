@@ -28,13 +28,13 @@ function App() {
                   <Link to="/videos">Videos</Link>
                 </li>
                 <li>
-                  <Link to="/keyboard">Keyboard</Link>
+                  <Link to="/math-keyboard">Keyboard</Link>
                 </li>
               </ul>
             </nav>
           </div>
           <Switch>
-            <Route path="/keyboard">
+            <Route path="/math-keyboard">
               <Keyboard />
             </Route>
             <Route path="/videos">
